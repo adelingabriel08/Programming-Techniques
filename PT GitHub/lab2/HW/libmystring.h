@@ -1,0 +1,15 @@
+char* Mystrstr(const char *dest,const char *src);
+unsigned int Mystrlen(const char *dest);
+char* Mystrchr(const char *dest, const char src);
+void Mystrtoupper(char *dest);
+void Mystrtolower(char *dest);
+int Mystrcmp(const char *a,const char *b);
+char *Mystrcpy(char *a, const char *b);
+char *Mystrncpy(char *a,const char *b,unsigned int c);
+char *Mystrerror(int errornum);
+char* Mymemset(char *dest, int character, int n);
+char* Mymemchr(const char *dest, int character, int n);
+char* Mystrcat(char *dest,  char *src);
+char *Mystrncat(char *dest,  char *src,int n);
+char* Mystrrchr( char *str, int c);
+int strcoll( char *s1,  char *s2);
