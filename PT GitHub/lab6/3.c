@@ -29,6 +29,10 @@ void min_max(unsigned int n, ...)
 
 int main()
 {
-    min_max(5, 3, 7, 1, 2, 8);
+    min_max(6, 3, 7, 1, 2, 8, 6);
     return 0;
 }
+#include<math.h>
+double (*mySin)(double);
+myFunction() = &sin;
+myFunction();

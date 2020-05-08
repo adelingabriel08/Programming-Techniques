@@ -1,41 +1,19 @@
 #include<stdio.h>
 #include<string.h>
-/*
-OOP:
-//ignore public keywords
-class ceva{
-    public string Nume;
-    public int pret;
-    public int dămiPretu()
-    {
-        return this.pret; // to ignore ish
-    }
-}
+#include<math.h>
+
 int main()
 {
-    ceva Obiect = new ceva();// to ignore 
-    Obiect.Nume = "UnNumeRandom";
-    Obiect.pret = 12;
-    printf("%d\n", Obiect.dămiPretu(parametrii daca are functia ));
-}
-*/
-struct ceva{
-    char nume[256];
-    int pret;
-    int (*daPretu)(struct ceva);
-};
-int arataPretu(struct ceva object)
-{
-    return object.pret;
-}
-int main()
-{
-    struct ceva obiectul;
-    strcpy(obiectul.nume, "UnNumeRandom");
-    obiectul.pret = 12;
-    obiectul.daPretu = &arataPretu; // mapez functia daPretu din struct la functia arataPretu, se apeleaza functia arataPretul cand o folosesti
-                                    // pe cea din struct
-    printf("Nume: %s\n", obiectul.nume);
-    printf("Pretul: %d\n", obiectul.daPretu(obiectul));
+    double (*functions[])(double) = {sin, cos, ceil, floor, fabs, log, sqrt};
+    char func[][10]={"sin", "cos", "ceil", "floor", "fabs", "log", "sqrt"};
+    int op;
+    do{
+     printf("Enter your option (0=sin, 1=cos, 2=ceil, 3=floor, 4=fabs, 5=log, 6=sqrt, 9=exit): ");
+     float nr;
+     scanf(" %d", &op);
+     printf("Enter the number: \n");
+     scanf(" %f", &nr);
+     printf("Executing %s(%f)...\n Result: %f \n", func[op], nr, functions[op](nr));
+    }while(op<=6 && op>=0);
     return 0;
 }

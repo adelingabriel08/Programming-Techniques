@@ -1,136 +1,139 @@
 #include <stdio.h>
-#include<math.h>
-#define N 10
-
-struct point
+#include <math.h>
+#define N 2
+struct gshape
 {
-    float x , y;
-}point1;
-
-struct shape
-{
-    int type; // 0 , 1 , 2
+    int type;
     int ID;
-    union
-    {
+    union {
         struct
         {
             float radius;
-            struct point center; //center of the circle
+            float x, y;
         } circle;
-        
         struct
         {
-            struct point t1 , t2 , t3;
-        }triangle;
-        
+            float x1, y1, x2, y2, x3, y3;
+        } triangle;
         struct
         {
-            struct point t1,t4; //upper left and right bottom
-        }rectangle;
-        
-    }shape;
-    
-    void (*read_shape)(struct shape *shape_ptr);
-    void (*write_shape)(struct shape *shape_ptr);
-    void (*area)(struct shape *shape_ptr);
+            float x1, y1;
+            float x4, y4;
+        } rectangle;
+    } gshape;
+
+    void (*read_gshape)(struct gshape *gs);
+    void (*write_gshape)(struct gshape *gs);
+    void (*area)(struct gshape *gs);
 };
 
-void read_circle(struct shape *shape_ptr)
+void read_circle(struct gshape *gs)
 {
-    printf("Enter radius.\n");
-    scanf("%f", &(shape_ptr->.circle.radius));
-    
-    printf("Enter center.\n");
-    scanf("%f %f", &(shape_ptr->.circle.center.x),&(shape_ptr->.circle.center.y));
+    printf(" radius ? ");
+    scanf("%f ", &(gs->gshape.circle.radius));
+    printf("X center ? ");
+    scanf("%f ", &(gs->gshape.circle.x));
+    printf("Y center?");
+    scanf("%f ", &(gs->gshape.circle.x));
 }
-
-void write_circle (struct shape *shape_ptr)
+void write_circle(struct gshape *gs)
 {
-    printf("Circle : (%f ,%f) , %f\n", shape_ptr->shape.circle.center.x , shape_ptr->shape.circle.center.y , shape_ptr->shape.circle.radius);
+    printf(" %f %f %f", &(gs->gshape.circle.x), &(gs->gshape.circle.y), &(gs->gshape.circle.radius));
 }
-
-void area_circle (struct shape *shape_ptr) // A = 2*pi*r^2
+void read_triangle(struct gshape *gs)
 {
-    printf("Circle area: %f\n", 2 * 3.14 * shape.circle.radius*shape.circle.radius);
-    return 0;
+    scanf(" %f %f %f %f %f %f ", &(gs->gshape.triangle.x1),
+            &(gs->gshape.triangle.y1), &( gs->gshape.triangle.x2),
+           &( gs->gshape.triangle.y2), &(gs->gshape.triangle.x3),
+            &(gs->gshape.triangle.y3));
 }
-
-void read_triangle (struct shape *shape_ptr) // A = sqrt(p(p-a)(p-b)(p-c)) , p = (a + b + c) / 2;
+void write_triangle(struct gshape *gs)
 {
-    printf("Enter coordinates.\n");
-    scanf("%f %f %f %f %f %f",&(shape_ptr->.triangle.t1.x) , &(shape_ptr->.triangle.t1.y) , &(shape_ptr->.triangle.t2.x) , &(shape_ptr->.triangle.t2.y) ,&(shape_ptr->.triangle.t3.x) , &(shape_ptr->.triangle.t3.y));
+    printf("Triangle (% f ,% f ) (% f ,% f ) , (% f ,% f )\n ", gs->gshape.triangle.x1,
+           gs->gshape.triangle.y1, gs->gshape.triangle.x2,
+           gs->gshape.triangle.y2, gs->gshape.triangle.x3,
+           gs->gshape.triangle.y3);
 }
-
-void write_triangle (struct shape *shape_ptr)
+void read_rectangle(struct gshape *gs)
 {
-    printf("Triangle : (%f ,%f) , (%f ,%f) , (%f ,%f)\n", shape_ptr->shape.triangle.t1.x , shape_ptr->shape.triangle.t1.y , shape_ptr->shape.triangle.t2.x, shape_ptr->shape.triangle.t2.y , shape_ptr->shape.triangle.t3.x ,shape_ptr->shape.triangle.t3.y);
+    printf("Reading rectangle :\n ");
+    scanf(" %f %f %f %f", &(gs->gshape.rectangle.x1), &(gs->gshape.rectangle.y1), &(gs->gshape.rectangle.x4), &(gs->gshape.rectangle.y4));
 }
-
-float area_triangle (struct shape *shape_ptr)
+void write_rectangle(struct gshape *gs)
 {
-    float p = (
-    return 0;
+    printf(" %f %f %f %f", gs->gshape.rectangle.x1, gs->gshape.rectangle.y1, gs->gshape.rectangle.x4, gs->gshape.rectangle.y4);
 }
-void read_rectangle (struct shape *shape_ptr)
+void area_circle(struct gshape *gs)
 {
-    printf("Enter coordinates.\n");
-    scanf("%f %f %f %f %f %f",&(shape_ptr->.rectangle.t1.x) , &(shape_ptr->.rectangle.t1.y) , &(shape_ptr->.rectangle.t4.x) , &(shape_ptr->.rectangle.t4.y));
+    printf("Circle area: %f\n", 3.14 * gs->gshape.circle.radius * gs->gshape.circle.radius);
 }
-
-void write_rectangle (struct shape *shape_ptr)
+float length(int x1, int y1, int x2, int y2)
 {
-    printf("Rectangle : (%f ,%f) , (%f ,%f) , (%f ,%f)\n", shape_ptr->shape.rectangle.t1.x , shape_ptr->shape.rectangle.t1.y , shape_ptr->shape.rectangle.t4.x, shape_ptr->shape.rectangle.t4.y);
+     return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
-
-float area_rectangle (struct shape *shape_ptr) // A = l * L;
+void area_triangle(struct gshape *gs)
 {
-    return 0;
+     float a, b, c, p;
+     a = length(gs->gshape.triangle.x1, gs->gshape.triangle.x2, gs->gshape.triangle.y1, gs->gshape.triangle.y2);
+     b = length(gs->gshape.triangle.x2, gs->gshape.triangle.x3, gs->gshape.triangle.y2, gs->gshape.triangle.y3);
+     c = length(gs->gshape.triangle.x3, gs->gshape.triangle.x1, gs->gshape.triangle.y3, gs->gshape.triangle.y1);
+     p = (a + b + c)/2.0;
+     float area = sqrt(p*(p-a)*(p-b)*(p-c));
+     printf("Triangle area: %f \n", area);
 }
-
-
-int main()
+void area_rectangle(struct gshape *gs)
 {
-    int i , type;
-    struct shape shape_ptr[N];
-    
-    for( i = 0; i < N; i++)
+    int x, y;
+    x = gs->gshape.rectangle.x1;
+    y = gs->gshape.rectangle.y4;
+    printf("Rectangle area: %f\n", length(x,y,gs->gshape.rectangle.x1,gs->gshape.rectangle.y1)*
+                                    length(x,y,gs->gshape.rectangle.x4, gs->gshape.rectangle.y4));
+}
+int main(void)
+{
+    int i, type;
+    struct gshape gs[N];
+    printf("Initializing the geometric shapes collection:\n ");
+    for (i = 0; i < N; i++)
     {
         do
         {
-            printf("Shape ID %d :\n",i);  //get info from user part
-            printf("What shape is it? (0 = circle , 1 = triangle , 2 = rectangle)\n");
-            scanf("%d",&type);
-            shape_ptr[i].type = type;
-            shape_ptr[i].ID = i;
-            
-            switch(shape_ptr[i].type) 
+            printf("Shape ID %d : ", i);
+            printf("What type of shape is it ? (0= circle, 1= triangle , 2= rectangle)");
+            scanf(" %d", &type);
+            gs[i].type = type;
+            gs[i].ID = i;
+            switch (gs[i].type)
             {
-                case 0:
-                    shape_ptr[i].read_shape = &read_circle;
-                    shape_ptr[i].write_shape = &write_circle;
-                    break;
-                
-                case 1:
-                    shape_ptr[i].read_shape = &read_triangle;
-                    shape_ptr[i].write_shape = &write_triangle;
-                    break;
-                    
-                case 2:
-                    shape_ptr[i].read_shape = &read_rectangle;
-                    shape_ptr[i].write_shape = &write_rectangle;
-                    break;    
-                    
-                default :
-                    printf("Oof...\n");
+            case 0:
+            {
+                gs[i].read_gshape = &read_circle;
+                gs[i].write_gshape = &write_circle;
+                gs[i].area = &area_circle;
+                gs[i].read_gshape(gs+i);
+                break;
             }
-        }
-        while((shape_ptr[i].type != 0) && (shape_ptr[i].type != 1) && (shape_ptr[i].type != 2)) //do we do this in order to be sure that at pos i,the structure is filled?
+            case 1:
+            {
+                gs[i].read_gshape = &read_triangle;
+                gs[i].write_gshape = &write_triangle;
+                gs[i].area = &area_triangle;
+                gs[i].read_gshape(gs+i);
+                break;
+            }
+            case 2:
+            {
+                gs[i].read_gshape = &read_rectangle;
+                gs[i].write_gshape = &write_rectangle;
+                gs[i].area = &area_rectangle;
+                gs[i].read_gshape(gs+i);
+                break;
+            }
+            }
+        } while((gs[i].type != 0) && (gs[i].type != 1) && (gs[i].type != 2));
     }
-    
-    printf("The area for every rectangle in our collection is:\n");
-    for(i = 0; i<N ; i++)
-        if(shape_ptr[i].type == 2)
-            shape_ptr[i].write_area_rectangle(&shape_ptr[i]); //dummy function
-    return 0;
+     for (i = 0; i < N; i++)
+         if (gs[i].type == 2)
+             gs[i].area(&gs[i]);
+    return 1;
 }
