@@ -88,8 +88,8 @@ int main(int argc, char **argv)
         printf("Decrypting....\n");
         while (fread(pt, sizeof(pt), 2, f))
         {
-            Speck128Decrypt(pt, ct, k);
-            fwrite(ct, sizeof(ct), 2, g_temp);
+            Speck128Decrypt(pt, pt, k);
+            fwrite(pt, sizeof(ct), 2, g_temp);
         }
         break;
     }
